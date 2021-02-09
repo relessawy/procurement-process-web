@@ -1,0 +1,142 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<dmn:definitions xmlns:dmn="http://www.omg.org/spec/DMN/20180521/MODEL/" xmlns="http://www.redhat.com/pam-workshop/procurement-process-dmn" xmlns:di="http://www.omg.org/spec/DMN/20180521/DI/" xmlns:kie="http://www.drools.org/kie/dmn/1.2" xmlns:feel="http://www.omg.org/spec/DMN/20180521/FEEL/" xmlns:dmndi="http://www.omg.org/spec/DMN/20180521/DMNDI/" xmlns:dc="http://www.omg.org/spec/DMN/20180521/DC/" id="_408B3109-7D39-4C99-AE66-B50474ED50BB" name="order-approval" expressionLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" typeLanguage="http://www.omg.org/spec/DMN/20180521/FEEL/" namespace="http://www.redhat.com/pam-workshop/procurement-process-dmn">
+  <dmn:extensionElements/>
+  <dmn:itemDefinition id="_126D55B5-F726-40C5-B31E-0BD4BFCC605E" name="OrderInfo" isCollection="false">
+    <dmn:itemComponent id="_B17FFC08-C1C1-48E3-8113-90CBBFF18EF1" name="supplierPrice" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_684A8F8F-E360-4BC8-B81C-44D1C1C84E92" name="supplier" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_25A56C14-17D9-409B-953D-C95BAAB8159F" name="urgency" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_1153A1B4-0BD0-4E26-A71A-5D5B52281657" name="targetPrice" isCollection="false">
+      <dmn:typeRef>number</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_DC52BC39-288B-4D54-A123-AE68B9D52138" name="item" isCollection="false">
+      <dmn:typeRef>string</dmn:typeRef>
+    </dmn:itemComponent>
+    <dmn:itemComponent id="_D02D872A-B1D3-462D-A63C-6D89CCC5CA5C" name="approved" isCollection="false">
+      <dmn:typeRef>boolean</dmn:typeRef>
+    </dmn:itemComponent>
+  </dmn:itemDefinition>
+  <dmn:itemDefinition id="_221689E9-430E-4570-B609-545B07AC5172" name="Urgency" isCollection="false">
+    <dmn:typeRef>string</dmn:typeRef>
+    <dmn:allowedValues kie:constraintType="enumeration" id="_8BF7A32F-312E-462D-9A07-C4F87354241B">
+      <dmn:text>"high", "low"</dmn:text>
+    </dmn:allowedValues>
+  </dmn:itemDefinition>
+  <dmn:inputData id="_A02A7762-9162-4FF8-B72E-6C7197EC9CC7" name="Order Information">
+    <dmn:extensionElements/>
+    <dmn:variable id="_4DCD5632-50E5-4923-B1ED-E55E1A3660ED" name="Order Information" typeRef="OrderInfo"/>
+  </dmn:inputData>
+  <dmn:decision id="_3E61D4A0-CFFE-4DD6-82C3-AE264A347577" name="Approve">
+    <dmn:extensionElements/>
+    <dmn:variable id="_E359003C-C26D-448E-A96A-702B28A2C9FE" name="Approve" typeRef="boolean"/>
+    <dmn:informationRequirement id="_2A60F87A-F3BE-45A4-A657-E4ADE89B1416">
+      <dmn:requiredInput href="#_A02A7762-9162-4FF8-B72E-6C7197EC9CC7"/>
+    </dmn:informationRequirement>
+    <dmn:knowledgeRequirement id="_1EBCF372-3909-4C8F-BE8B-F0460FF13C80">
+      <dmn:requiredKnowledge href="#_F4111FDD-7769-47AA-ACFA-7578B168BF2E"/>
+    </dmn:knowledgeRequirement>
+    <dmn:literalExpression id="_F5474A57-1BF2-4C54-9657-AECEBBDC6538">
+      <dmn:text>Order Information.supplierPrice &lt; Price Tolerance(Order Information) * Order Information.targetPrice
+</dmn:text>
+    </dmn:literalExpression>
+  </dmn:decision>
+  <dmn:businessKnowledgeModel id="_F4111FDD-7769-47AA-ACFA-7578B168BF2E" name="Price Tolerance">
+    <dmn:extensionElements/>
+    <dmn:variable id="_79F0454D-03B4-44EF-99B1-2059AC8227F9" name="Price Tolerance" typeRef="number"/>
+    <dmn:encapsulatedLogic id="_E04F2F96-1304-4C5F-ACC2-656D5E6DDFF8" kind="FEEL">
+      <dmn:formalParameter id="_13554650-0163-4973-8DA9-E431708D5AAC" name="Order Information" typeRef="OrderInfo"/>
+      <dmn:decisionTable id="_A6EC4E88-8B6E-4E3F-B386-C7CC328D5C4D" hitPolicy="UNIQUE" preferredOrientation="Rule-as-Row">
+        <dmn:input id="_FD99A23F-D262-4A99-A265-D6B8F1E72CC0">
+          <dmn:inputExpression id="_05DC0B4C-39DE-41D6-AC2F-B3FFC536F4B0" typeRef="Urgency">
+            <dmn:text>Order Information.urgency</dmn:text>
+          </dmn:inputExpression>
+        </dmn:input>
+        <dmn:output id="_FD65D121-3F94-469E-A503-A819B279A114"/>
+        <dmn:annotation name="annotation-1"/>
+        <dmn:rule id="_B56F8FA4-42C8-4873-8D39-CC8826A5F651">
+          <dmn:inputEntry id="_714E55B4-8601-4589-83E5-C712000599CD">
+            <dmn:text>"high"</dmn:text>
+          </dmn:inputEntry>
+          <dmn:outputEntry id="_531DA206-50D4-4FD4-871A-9BD74061BC36">
+            <dmn:text>1.25</dmn:text>
+          </dmn:outputEntry>
+          <dmn:annotationEntry>
+            <dmn:text></dmn:text>
+          </dmn:annotationEntry>
+        </dmn:rule>
+        <dmn:rule id="_2F130C1E-DCCD-47C7-9129-5E118A053A51">
+          <dmn:inputEntry id="_09D43877-8477-4B4E-862D-0E21F8629627">
+            <dmn:text>"low"</dmn:text>
+          </dmn:inputEntry>
+          <dmn:outputEntry id="_782C5865-6F58-4F4D-BFD2-545E36D965A1">
+            <dmn:text>1.15</dmn:text>
+          </dmn:outputEntry>
+          <dmn:annotationEntry>
+            <dmn:text></dmn:text>
+          </dmn:annotationEntry>
+        </dmn:rule>
+      </dmn:decisionTable>
+    </dmn:encapsulatedLogic>
+  </dmn:businessKnowledgeModel>
+  <dmndi:DMNDI>
+    <dmndi:DMNDiagram>
+      <di:extension>
+        <kie:ComponentsWidthsExtension>
+          <kie:ComponentWidths dmnElementRef="_F5474A57-1BF2-4C54-9657-AECEBBDC6538">
+            <kie:width>751.0</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_A6EC4E88-8B6E-4E3F-B386-C7CC328D5C4D">
+            <kie:width>50.0</kie:width>
+            <kie:width>228.0</kie:width>
+            <kie:width>200.0</kie:width>
+            <kie:width>170.0</kie:width>
+          </kie:ComponentWidths>
+          <kie:ComponentWidths dmnElementRef="_E04F2F96-1304-4C5F-ACC2-656D5E6DDFF8">
+            <kie:width>50.0</kie:width>
+            <kie:width>668.0</kie:width>
+          </kie:ComponentWidths>
+        </kie:ComponentsWidthsExtension>
+      </di:extension>
+      <dmndi:DMNShape id="dmnshape-_A02A7762-9162-4FF8-B72E-6C7197EC9CC7" dmnElementRef="_A02A7762-9162-4FF8-B72E-6C7197EC9CC7" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="252" green="244" blue="2"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="406" y="238" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-_3E61D4A0-CFFE-4DD6-82C3-AE264A347577" dmnElementRef="_3E61D4A0-CFFE-4DD6-82C3-AE264A347577" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="9" green="17" blue="248"/>
+          <dmndi:StrokeColor red="0" green="0" blue="0"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="406" y="90" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNShape id="dmnshape-_F4111FDD-7769-47AA-ACFA-7578B168BF2E" dmnElementRef="_F4111FDD-7769-47AA-ACFA-7578B168BF2E" isCollapsed="false">
+        <dmndi:DMNStyle>
+          <dmndi:FillColor red="109" green="4" blue="247"/>
+          <dmndi:StrokeColor red="114" green="7" blue="254"/>
+          <dmndi:FontColor red="0" green="0" blue="0"/>
+        </dmndi:DMNStyle>
+        <dc:Bounds x="619" y="89" width="100" height="50"/>
+        <dmndi:DMNLabel/>
+      </dmndi:DMNShape>
+      <dmndi:DMNEdge id="dmnedge-_2A60F87A-F3BE-45A4-A657-E4ADE89B1416" dmnElementRef="_2A60F87A-F3BE-45A4-A657-E4ADE89B1416">
+        <di:waypoint x="456" y="263"/>
+        <di:waypoint x="456" y="140"/>
+      </dmndi:DMNEdge>
+      <dmndi:DMNEdge id="dmnedge-_1EBCF372-3909-4C8F-BE8B-F0460FF13C80" dmnElementRef="_1EBCF372-3909-4C8F-BE8B-F0460FF13C80">
+        <di:waypoint x="669" y="114"/>
+        <di:waypoint x="506" y="115"/>
+      </dmndi:DMNEdge>
+    </dmndi:DMNDiagram>
+  </dmndi:DMNDI>
+</dmn:definitions>
