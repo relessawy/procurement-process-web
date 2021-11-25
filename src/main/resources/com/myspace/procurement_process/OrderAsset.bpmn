@@ -61,7 +61,7 @@
   <bpmn2:itemDefinition id="__0381DE94-1909-4E4A-A885-41663D3C5F85_supplierPriceInputXItem" structureRef="Float"/>
   <bpmn2:itemDefinition id="__0381DE94-1909-4E4A-A885-41663D3C5F85_urgencyInputXItem" structureRef="String"/>
   <bpmn2:itemDefinition id="__0381DE94-1909-4E4A-A885-41663D3C5F85_approvedOutputXItem" structureRef="Boolean"/>
-  <bpmn2:process id="procurement_process.OrderAsset" drools:packageName="com.myspace.procurement_process" drools:version="1.0" drools:adHoc="false" name="OrderAsset" isExecutable="true" processType="Public">
+  <bpmn2:process id="procurement-process.OrderAsset" drools:packageName="com.myspace.procurement_process" drools:version="1.0" drools:adHoc="false" name="OrderAsset" isExecutable="true" processType="Public">
     <bpmn2:property id="approved" itemSubjectRef="_approvedItem" name="approved"/>
     <bpmn2:property id="laptop" itemSubjectRef="_laptopItem" name="laptop"/>
     <bpmn2:property id="urgency" itemSubjectRef="_urgencyItem" name="urgency"/>
@@ -496,7 +496,7 @@
     </bpmn2:exclusiveGateway>
   </bpmn2:process>
   <bpmndi:BPMNDiagram>
-    <bpmndi:BPMNPlane bpmnElement="procurement_process.OrderAsset">
+    <bpmndi:BPMNPlane bpmnElement="procurement-process.OrderAsset">
       <bpmndi:BPMNShape id="shape__3B1DE184-977A-4BB2-A5C2-39938AD68FCC" bpmnElement="_3B1DE184-977A-4BB2-A5C2-39938AD68FCC">
         <dc:Bounds height="56" width="56" x="1477" y="353"/>
       </bpmndi:BPMNShape>
